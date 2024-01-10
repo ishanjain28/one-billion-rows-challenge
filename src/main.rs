@@ -1,10 +1,10 @@
-use std::collections::HashMap;
+use fxhash::FxHashMap;
 use std::fs::File;
 use std::io::Read;
 use std::time::Instant;
 
 fn main() {
-    let mut map = HashMap::new();
+    let mut map = FxHashMap::default();
     let mut buf = Vec::new();
 
     let t1 = Instant::now();
