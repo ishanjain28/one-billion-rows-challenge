@@ -1,16 +1,18 @@
 use fxhash::FxHashMap;
+use memmap::MmapOptions;
 use rayon::prelude::*;
-use std::{fs::File, io::Read, time::Instant};
+use std::{fs::File, time::Instant};
 
 fn main() {
-    let mut buf = Vec::new();
-
     let t1 = Instant::now();
 
-    let mut file = File::open("./measurements.txt").expect("error in opening file");
+    let file = File::open("./measurements.txt").expect("error in opening file");
 
-    file.read_to_end(&mut buf)
-        .expect("error in reading file to memory");
+    let buf = unsafe {
+        MmapOptions::new()
+            .map(&file)
+            .expect("error in mmaping file")
+    };
 
     let t1_elapsed = t1.elapsed();
 
