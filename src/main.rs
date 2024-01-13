@@ -26,14 +26,12 @@ fn main() {
                 return None;
             }
 
-            let loc = if line[l - 6] == b';' {
-                l - 6
-            } else if line[l - 5] == b';' {
-                l - 5
-            } else if line[l - 4] == b';' {
-                l - 4
-            } else {
-                unreachable!();
+            let loc = match line[l - 6..][..3] {
+                [b';', _, _] => l - 6,
+                [_, b';', _] => l - 5,
+                [_, _, b';'] => l - 4,
+
+                _ => unreachable!(),
             };
 
             let (city, val) = line.split_at(loc);
